@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { interval  } from 'rxjs';
 
 @Component({
     selector     : 'landing-home',
@@ -10,7 +11,9 @@ export class LandingHomeComponent
     /**
      * Constructor
      */
+    rotate: number = 0;
     constructor()
     {
+
     }
 }

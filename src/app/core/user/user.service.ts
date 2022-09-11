@@ -49,7 +49,6 @@ export class UserService {
      */
     get(): Observable<User> {
         const userId = AuthUtils._decodeToken(this.getAccessToken()).user_id;
-        ;
         return this._httpClient.get<User>(`${environment.firebase.databaseURL}/users/${userId}.json`).pipe(
             tap((user) => {
                 this._user.next(user);

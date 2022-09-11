@@ -29,7 +29,6 @@ export interface AuthResponseNewToken {
 @Injectable()
 export class AuthService {
     private _authenticated: boolean = false;
-    private urlSignIn = environment.urlSignIn;
     constructor(
         private _httpClient: HttpClient,
         private _userService: UserService
@@ -65,12 +64,10 @@ export class AuthService {
         const newCredentials = { ...credentials, returnSecureToken: true };
         // Throw error, if the user is already logged in
         if (this._authenticated) {
-            return throwError('User is already logged in.');
+            return throwError(()=> new Error('User is already logged in.'));
         }
-        newCredentials.email = 'sangnero92@gmail.com';
-        newCredentials.password = '12345678';
-        return this._httpClient.post(this.urlSignIn, newCredentials).pipe(
-            mergeMap((response: AuthResponseData) => {
+        return this._httpClient.post(environment.urlSignIn, newCredentials).pipe(
+            switchMap((response: AuthResponseData) => {
                 // Store the access token in the local storage
                 this.accessToken = response.idToken;
                 this.refreshToken = response.refreshToken;
@@ -97,7 +94,6 @@ export class AuthService {
                     of(false)
                 ),
                 switchMap((response: AuthResponseNewToken) => {
-                    console.log('response', response);
                     // Store the access token in the local storage
                     this.accessToken = response.access_token;
 
@@ -136,7 +132,25 @@ export class AuthService {
         password: string;
         company: string;
     }): Observable<any> {
-        return this._httpClient.post('api/auth/sign-up', user);
+        const newUser = { ...user, returnSecureToken: true };
+        return this._httpClient.post(environment.urlSignUp, newUser).pipe(
+            switchMap((response: AuthResponseData) => {
+                // Store the access token in the local storage
+                this.accessToken = response.idToken;
+                this.refreshToken = response.refreshToken;
+                // Set the authenticated flag to true
+                this._authenticated = true;
+                const newUserDataBase = {
+                    id: response.localId,
+                    name: user.name,
+                    email: response.email,
+                    avatar: 'https://firebasestorage.googleapis.com/v0/b/medico-4c2e3.appspot.com/o/profile.png?alt=media&token=b2b380fb-e161-48b8-889e-90d628f13e81',
+                    status: 'Online',
+                };
+                return this._httpClient.patch(`${environment.firebase.databaseURL}/users/${newUserDataBase.id}.json`,newUserDataBase);
+            }),
+            switchMap(_=> of(true))
+        );
     }
 
     /**
@@ -159,13 +173,11 @@ export class AuthService {
 
 
         if (this._authenticated) {
-            console.log('this._authenticated',this._authenticated);
             return of(true);
         }
 
         // Check the access token availability
         if (!this.accessToken) {
-            console.log('this.accessToken',this.accessToken);
             return of(false);
         }
 

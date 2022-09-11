@@ -45,8 +45,8 @@ export class AuthSignInComponent implements OnInit
     {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            email     : ['hughes.brian@company.com', [Validators.required, Validators.email]],
-            password  : ['admin', Validators.required],
+            email     : ['sangnero92@gmail.com', [Validators.required, Validators.email]],
+            password  : ['12345678', Validators.required],
             rememberMe: ['']
         });
     }
@@ -74,8 +74,8 @@ export class AuthSignInComponent implements OnInit
 
         // Sign in
         this._authService.signIn(this.signInForm.value)
-            .subscribe(
-                () => {
+            .subscribe({
+                next: () => {
 
                     // Set the redirect url.
                     // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
@@ -86,7 +86,7 @@ export class AuthSignInComponent implements OnInit
                     this._router.navigateByUrl(redirectURL);
 
                 },
-                (response) => {
+                error: (response) => {
 
                     // Re-enable the form
                     this.signInForm.enable();
@@ -103,6 +103,6 @@ export class AuthSignInComponent implements OnInit
                     // Show the alert
                     this.showAlert = true;
                 }
-            );
+            });
     }
 }

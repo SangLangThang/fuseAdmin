@@ -95,7 +95,8 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "fuse:build:production"
+                            "browserTarget": "fuse:build:production",
+                            "disableHostCheck": true
                         },
                         "development": {
                             "browserTarget": "fuse:build:development"

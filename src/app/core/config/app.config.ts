@@ -67,5 +67,10 @@ export const appConfig: AppConfig = {
             id  : 'theme-amber',
             name: 'Amber'
         }
+        ,
+        {
+            id  : 'theme-astro',
+            name: 'Astro'
+        }
     ]
 };

@@ -5,10 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from 'app/shared/shared.module';
 import { LandingHomeComponent } from 'app/modules/landing/home/home.component';
 import { landingHomeRoutes } from 'app/modules/landing/home/home.routing';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
     declarations: [
-        LandingHomeComponent
+        LandingHomeComponent,
+        HeaderComponent,
     ],
     imports     : [
         RouterModule.forChild(landingHomeRoutes),

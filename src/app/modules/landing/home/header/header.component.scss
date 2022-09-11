@@ -1,0 +1,85 @@
+header {
+    position: relative;
+    background: linear-gradient(
+        79.45deg,
+        #004b7a 73.47%,
+        rgba(0, 75, 122, 0) 171.86%
+    );
+
+    .navbar {
+        & .nav-link {
+            color: white;
+            font-weight: 500;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            & i {
+                position: relative;
+                top: 2px;
+                margin-left: 5px;
+                transition: transform 0.3s;
+            }
+            &.active,
+            &:hover {
+                color: red;
+            }
+        }
+
+        & .dropdown-menu {
+            min-width: 295px;
+            padding: 0;
+            top: 58px;
+            left: calc(0px - (20px - 0.5rem));
+            filter: drop-shadow(0px 2px 8px rgba(0, 0, 0, 0.1));
+            border: none;
+            & .dropdown-item {
+                color: var(--fuse-on-primary);
+                padding: 15px 20px;
+                white-space: normal;
+                font-weight: 500;
+                &:hover,
+                &:active,
+                &.active {
+                    background-color: var(--fuse-on-primary);
+                }
+            }
+        }
+
+        & .dropdown-toggle {
+            &::after {
+                display: none;
+            }
+            &.show {
+                & i {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+        & .navbar-nav {
+            align-items: center;
+            & .nav-item {
+                margin-left: 3.125rem;
+                &:first-child {
+                    margin-left: 0;
+                }
+            }
+        }
+        & .navbar-toggler {
+            color: white;
+        }
+        &.bg-white {
+            & .navbar-toggler {
+                color: #343438;
+            }
+        }
+    }
+    .hero {
+        color: white;
+        padding-top: calc(100px + 40px);
+
+        .hero-image {
+            margin-right: -135px;
+            position: relative;
+            right: 45px;
+        }
+    }
+}
