@@ -15,8 +15,8 @@ import { appRoutes } from 'app/app.routing';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { environment } from 'environments/environment';
-import { StreamChatModule, StreamAutocompleteTextareaModule } from 'stream-chat-angular';
 import { TranslateModule } from '@ngx-translate/core';
+
 const routerConfig: ExtraOptions = {
     preloadingStrategy: PreloadAllModules,
     scrollPositionRestoration: 'enabled',
@@ -43,12 +43,10 @@ const routerConfig: ExtraOptions = {
         // 3rd party modules that require global configuration via forRoot
         MarkdownModule.forRoot({}),
 
-        //Firebase
+        // Firebase
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
-
-        //getstream.io
-        StreamAutocompleteTextareaModule, StreamChatModule,
+        // GetStream.io
         TranslateModule.forRoot()
     ],
     bootstrap: [AppComponent],

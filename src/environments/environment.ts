@@ -18,6 +18,9 @@ export const environment = {
         messagingSenderId: '851800258380',
         appId: '1:851800258380:web:119fc18bd1fd527c9281e9',
     },
+    streamIO: {
+        key: 'vzjz4e946w2c'
+    }
 };
 
 /*
