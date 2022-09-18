@@ -1,7 +1,7 @@
 <div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
 
     <!-- Main -->
-    <div class="flex flex-auto overflow-hidden">
+    <div class="flex flex-auto overflow-hidden" *ngIf="chatIsReady$ | async;">
         <router-outlet></router-outlet>
     </div>
 

@@ -90,7 +90,7 @@ export class AuthService {
         return this._httpClient.post(url, body)
             .pipe(
                 catchError(() =>
-                    // Return false
+                    // Return false;
                     of(false)
                 ),
                 switchMap((response: AuthResponseNewToken) => {
@@ -170,14 +170,12 @@ export class AuthService {
      */
     check(): Observable<boolean> {
         // Check if the user is logged in
-
-
         if (this._authenticated) {
             return of(true);
         }
 
         // Check the access token availability
-        if (!this.accessToken) {
+        if (!this.accessToken || this.accessToken === 'undefined') {
             return of(false);
         }
 
