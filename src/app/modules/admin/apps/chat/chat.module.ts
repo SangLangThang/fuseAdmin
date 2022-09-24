@@ -15,6 +15,8 @@ import { ContactInfoComponent } from 'app/modules/admin/apps/chat/contact-info/c
 import { ConversationComponent } from 'app/modules/admin/apps/chat/conversation/conversation.component';
 import { NewChatComponent } from 'app/modules/admin/apps/chat/new-chat/new-chat.component';
 import { ProfileComponent } from 'app/modules/admin/apps/chat/profile/profile.component';
+import { MessageListComponent } from './custom/message-list/message-list.component';
+import { MessageInputComponent } from './custom/message-input/message-input.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +25,9 @@ import { ProfileComponent } from 'app/modules/admin/apps/chat/profile/profile.co
         ContactInfoComponent,
         ConversationComponent,
         NewChatComponent,
-        ProfileComponent
+        ProfileComponent,
+        MessageListComponent,
+        MessageInputComponent
     ],
     imports     : [
         RouterModule.forChild(chatRoutes),

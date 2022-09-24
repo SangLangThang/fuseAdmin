@@ -6,9 +6,11 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, switchMap, takeUntil } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { Chat, Profile } from 'app/modules/admin/apps/chat/chat.types';
 import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
+import { ChannelService } from 'stream-chat-angular';
 
 @Component({
     selector: 'chat-chats',
@@ -30,7 +32,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
      */
     constructor(
         private _chatService: ChatService,
-        private _changeDetectorRef: ChangeDetectorRef
+        private _changeDetectorRef: ChangeDetectorRef,
+        private channelService: ChannelService,
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -42,7 +45,16 @@ export class ChatsComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         // Chats
-        this._chatService.chats$
+        this._chatService.getUsersChat()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((chats) => {
+                console.log('chats', chats);
+                this.chats = this.filteredChats = chats;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+        /* this._chatService.chats$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((chats: Chat[]) => {
                 console.log('chats', chats);
@@ -50,7 +62,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
+            }); */
 
         // Profile
         this._chatService.profile$
@@ -133,5 +145,16 @@ export class ChatsComponent implements OnInit, OnDestroy {
      */
     trackByFn(index: number, item: any): any {
         return item.id || index;
+    }
+
+    createPrivateChat(): void{
+        this._chatService.createPrivateChat().pipe(
+            switchMap(channel => this.channelService.init({
+                    type: 'messaging',
+                    id: channel.channel.id,
+            }))
+        ).subscribe((channel) => {
+            console.log('channel', channel);
+        });
     }
 }

@@ -1,0 +1,59 @@
+<div *ngFor="let message of messages; let i = index; let first = first; let last = last; trackBy: trackByMessageId">
+    <!-- Start of the day -->
+    <ng-container *ngIf="first || (messages[i - 1].created_at | date:'d') !== (message.created_at | date:'d')">
+        <div class="flex items-center justify-center my-3 -mx-6">
+            <div class="flex-auto border-b"></div>
+            <div class="flex-0 mx-4 text-sm font-medium leading-5 text-secondary">
+                {{message.created_at | date: 'longDate'}}
+            </div>
+            <div class="flex-auto border-b"></div>
+        </div>
+    </ng-container>
+    <div class="flex flex-col"
+        [ngClass]="{'items-end': isMine(message.user.id),
+                                            'items-start': !isMine(message.user.id),
+                                            'mt-0.5': i > 0 && isMine(messages[i-1].user.id) === isMine(message.user.id),
+                                            'mt-3': i > 0 && isMine(messages[i-1].user.id) !== isMine(message.user.id)}">
+        <!-- Bubble -->
+        <div class="relative max-w-3/4 px-3 py-2 rounded-lg" [ngClass]="{'bg-blue-500 text-blue-50': isMine(message.user.id),
+                                                'bg-gray-500 text-gray-50': !isMine(message.user.id)}">
+            <!-- Speech bubble tail -->
+            <ng-container *ngIf="
+                                            first || 
+                                            last || 
+                                            (isMine(messages[i + 1].user.id) !== isMine(message.user.id)) ||
+                                            (messages[i + 1].created_at | date:'d') !== (message.created_at | date:'d')
+                                            ">
+                <div class="absolute bottom-0 w-3"
+                    [ngClass]="{'text-blue-500 -right-1 -mr-px mb-px': isMine(message.user.id),
+                                                        'text-gray-500 -left-1 -ml-px mb-px -scale-x-1': !isMine(message.user.id)}">
+                    <ng-container *ngTemplateOutlet="speechBubbleExtension"></ng-container>
+                </div>
+            </ng-container>
+            <!-- Message -->
+            <div class="min-w-4 leading-5" [innerHTML]="message.text">
+            </div>
+        </div>
+        <!-- Time -->
+        <ng-container
+            *ngIf="first || last || isMine(messages[i+1].user.id) !== isMine(message.user.id) || (messages[i + 1].created_at | date:'d') !== (message.created_at | date:'d')">
+            <div class="my-0.5 text-sm font-medium text-secondary" [ngClass]="{'mr-3': isMine(message.user.id),
+                                                    'ml-3': !isMine(message.user.id)}">
+                {{message.created_at | date:'HH:mm'}}
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<!-- Speech bubble tail SVG -->
+<!-- @formatter:off -->
+<ng-template #speechBubbleExtension>
+    <svg width="100%" height="100%" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <path
+                d="M1.01522827,0.516204834 C-8.83532715,54.3062744 61.7609863,70.5215302 64.8009949,64.3061218 C68.8074951,54.8859711 30.1663208,52.9997559 37.5036011,0.516204834 L1.01522827,0.516204834 Z"
+                fill="currentColor" fill-rule="nonzero"></path>
+        </g>
+    </svg>
+</ng-template>
+<!-- @formatter:on -->

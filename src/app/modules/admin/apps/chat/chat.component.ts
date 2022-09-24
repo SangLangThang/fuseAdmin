@@ -4,7 +4,7 @@ import {
     OnInit,
     ViewEncapsulation,
 } from '@angular/core';
-import { StreamChat } from 'stream-chat';
+import { ConnectionOpen, StreamChat } from 'stream-chat';
 import {
     ChatClientService,
     ChannelService,
@@ -19,6 +19,7 @@ import {
     from,
     forkJoin,
     combineLatest,
+    tap,
 } from 'rxjs';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UserService } from 'app/core/user/user.service';
@@ -50,9 +51,14 @@ export class ChatComponent implements OnInit {
         ]).pipe(
             switchMap(([chatClient, user]) => this.gsChatService.init(
                 'vzjz4e946w2c',
-                user.id,
+                {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                },
                 chatClient.devToken(user.id)
             )),
+            tap(res => console.log('user', (res as ConnectionOpen).me)),
             map((channel) => {
                 console.log('channel', channel);
                 return true;

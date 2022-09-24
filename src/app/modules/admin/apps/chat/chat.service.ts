@@ -16,6 +16,8 @@ import {
 import { Chat, Contact, Profile } from 'app/modules/admin/apps/chat/chat.types';
 import {
     APIResponse,
+    Channel,
+    ChannelAPIResponse,
     DefaultGenerics,
     StreamChat,
     UserResponse,
@@ -230,10 +232,23 @@ export class ChatService {
     getUsersChat(): Observable<Array<UserResponse<DefaultGenerics>>> {
         return this._chatClient.pipe(
             switchMap(chatClient =>
-                from(chatClient.queryUsers({})).pipe(
-                    map(channel => channel.users)
+                from(chatClient.queryUsers({
+                    role: { $nin: ['admin'] }
+                })).pipe(
+                    map(res => res.users)
                 )
             )
+        );
+    }
+
+    createPrivateChat(): Observable<ChannelAPIResponse<DefaultGenerics>>{
+        return this._chatClient.pipe(
+            switchMap(chatClient => {
+                const channel =  chatClient.channel('messaging', {
+                    members: ['bKGuZigmozR6WD4AbuFE9j43FZG3', 'XX8BRnWNBQd7ZVZBFtvWm8Vcwof2'],
+                });
+                return from(channel.create());
+            })
         );
     }
 }
