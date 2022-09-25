@@ -3,19 +3,4 @@
 /*  @ Styles from this file will override 'vendors.scss' and Fuse's base styles.
 /* ----------------------------------------------------------------------------------------------------- */
 @import '~stream-chat-angular/src/assets/styles/scss/index.scss';
-#root {
-    display: flex;
-    height: 100%;
-  
-    stream-channel-list {
-      width: 30%;
-    }
-  
-    stream-channel {
-      width: 100%;
-    }
-  
-    stream-thread {
-      width: 45%;
-    }
-  }
+@import '~@ctrl/ngx-emoji-mart/picker';

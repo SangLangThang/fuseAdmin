@@ -1,5 +1,4 @@
 <div class="flex flex-col flex-auto overflow-y-auto lg:overflow-hidden bg-card dark:bg-default">
-
     <ng-container *ngIf="activeChannel$ | async; else selectChatOrStartNew">
 
         <mat-drawer-container class="flex-auto h-full" [hasBackdrop]="false">
@@ -79,12 +78,7 @@
                 <!-- Message field -->
                 <div class="flex items-end p-4 border-t bg-gray-50 dark:bg-transparent">
                     <div class="flex items-center h-11 my-px">
-                        <button mat-icon-button>
-                            <mat-icon [svgIcon]="'heroicons_outline:emoji-happy'"></mat-icon>
-                        </button>
-                        <button class="ml-0.5" mat-icon-button>
-                            <mat-icon [svgIcon]="'heroicons_outline:paper-clip'"></mat-icon>
-                        </button>
+                        <app-emoji-picker></app-emoji-picker>
                     </div>
                     <mat-form-field
                         class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded fuse-mat-bold w-full ml-4">

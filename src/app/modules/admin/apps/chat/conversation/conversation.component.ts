@@ -14,7 +14,7 @@ import { Subject, takeUntil, Observable } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Chat } from 'app/modules/admin/apps/chat/chat.types';
 import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
-import { ChannelService, ChatClientService, DefaultStreamChatGenerics, StreamMessage } from 'stream-chat-angular';
+import { ChannelService, ChatClientService, DefaultStreamChatGenerics, EmojiInputService, StreamMessage } from 'stream-chat-angular';
 import { Channel, DefaultGenerics, UserResponse } from 'stream-chat';
 
 @Component({
@@ -44,7 +44,8 @@ export class ConversationComponent implements OnInit, OnDestroy {
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _ngZone: NgZone,
         private channelService: ChannelService,
-        private chatClientService: ChatClientService
+        private chatClientService: ChatClientService,
+        private emojiInputService: EmojiInputService
     ) {
         this.activeChannel$ = this.channelService.activeChannel$;
         this.channelService.activeChannel$
@@ -60,6 +61,9 @@ export class ConversationComponent implements OnInit, OnDestroy {
                     });
                 }
             });
+        this.emojiInputService.emojiInput$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(emojiInput => this.messageInput.nativeElement.value += emojiInput);
     }
 
     // -----------------------------------------------------------------------------------------------------

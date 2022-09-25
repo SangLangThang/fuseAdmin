@@ -1,0 +1,15 @@
+<div #container class="emoji-picker-container">
+  <button mat-icon-button (click)="toggled()">
+    <mat-icon [svgIcon]="'heroicons_outline:emoji-happy'"></mat-icon>
+  </button>
+
+  <emoji-mart
+    class="picker"
+    *ngIf="isOpened"
+    title="Pick your emoji…"
+    emoji="point_up"
+    [showPreview]="false"
+    [virtualize]="true"
+    (emojiSelect)="emojiSelected($event)"
+  ></emoji-mart>
+</div>

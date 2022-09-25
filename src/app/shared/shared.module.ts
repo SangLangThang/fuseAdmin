@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StreamChatModule, StreamAutocompleteTextareaModule } from 'stream-chat-angular';
 import { TranslateModule } from '@ngx-translate/core';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -10,7 +12,9 @@ import { TranslateModule } from '@ngx-translate/core';
         ReactiveFormsModule,
         //getstream.io
         StreamAutocompleteTextareaModule, StreamChatModule,
-        TranslateModule.forChild()
+        TranslateModule.forChild(),
+        //picker module
+        PickerModule
     ],
     exports: [
         CommonModule,
@@ -18,6 +22,8 @@ import { TranslateModule } from '@ngx-translate/core';
         ReactiveFormsModule,
         //getstream.io
         StreamAutocompleteTextareaModule, StreamChatModule,
+        //picker module
+        PickerModule
     ]
 })
 export class SharedModule

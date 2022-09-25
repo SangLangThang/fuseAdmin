@@ -17,7 +17,7 @@ import { NewChatComponent } from 'app/modules/admin/apps/chat/new-chat/new-chat.
 import { ProfileComponent } from 'app/modules/admin/apps/chat/profile/profile.component';
 import { MessageListComponent } from './custom/message-list/message-list.component';
 import { MessageInputComponent } from './custom/message-input/message-input.component';
-
+import { EmojiPickerComponent } from './custom/emoji-picker/emoji-picker.component';
 @NgModule({
     declarations: [
         ChatComponent,
@@ -27,7 +27,8 @@ import { MessageInputComponent } from './custom/message-input/message-input.comp
         NewChatComponent,
         ProfileComponent,
         MessageListComponent,
-        MessageInputComponent
+        MessageInputComponent,
+        EmojiPickerComponent
     ],
     imports     : [
         RouterModule.forChild(chatRoutes),
