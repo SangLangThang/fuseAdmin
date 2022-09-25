@@ -20,7 +20,8 @@
                     </div>
                 </ng-container>
                 <!-- Contact -->
-                <div class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b hover:bg-gray-100 dark:hover:bg-hover">
+                <div class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b hover:bg-gray-100 dark:hover:bg-hover"
+                    (click)="addUserChat()">
                     <div class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden">
                         <ng-container *ngIf="contact.avatar">
                             <img
@@ -30,7 +31,7 @@
                         </ng-container>
                         <ng-container *ngIf="!contact.avatar">
                             <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
-                                {{contact.name.charAt(0)}}
+                                <mat-icon [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
                             </div>
                         </ng-container>
                     </div>

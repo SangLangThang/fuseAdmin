@@ -11,7 +11,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { Chat, Profile } from 'app/modules/admin/apps/chat/chat.types';
 import { ChatService } from 'app/modules/admin/apps/chat/chat.service';
 import { ChannelService } from 'stream-chat-angular';
-
+import { UserService } from 'app/core/user/user.service';
 @Component({
     selector: 'chat-chats',
     templateUrl: './chats.component.html',
@@ -34,6 +34,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
         private _chatService: ChatService,
         private _changeDetectorRef: ChangeDetectorRef,
         private channelService: ChannelService,
+        private _userService: UserService,
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -48,8 +49,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
         this._chatService.getUsersChat()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((chats) => {
-                console.log('chats', chats);
-                this.chats = this.filteredChats = chats;
+                this.chats = this.filteredChats = [];
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -65,14 +65,20 @@ export class ChatsComponent implements OnInit, OnDestroy {
             }); */
 
         // Profile
-        this._chatService.profile$
+        this._userService.user$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((user) =>{
+                this.profile = user;
+                this._changeDetectorRef.markForCheck();
+            });
+        /* this._chatService.profile$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((profile: Profile) => {
                 this.profile = profile;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
-            });
+            }); */
 
         // Selected chat
         this._chatService.chat$
@@ -147,8 +153,8 @@ export class ChatsComponent implements OnInit, OnDestroy {
         return item.id || index;
     }
 
-    createPrivateChat(): void{
-        this._chatService.createPrivateChat().pipe(
+    createPrivateChat(memberId: string): void{
+        this._chatService.createPrivateChat(memberId).pipe(
             switchMap(channel => this.channelService.init({
                     type: 'messaging',
                     id: channel.channel.id,

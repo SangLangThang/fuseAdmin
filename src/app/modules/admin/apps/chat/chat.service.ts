@@ -23,6 +23,7 @@ import {
     UserResponse,
 } from 'stream-chat';
 import { DefaultStreamChatGenerics } from 'stream-chat-angular';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 
 @Injectable({
     providedIn: 'root',
@@ -41,7 +42,7 @@ export class ChatService {
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) {}
+    constructor(private _httpClient: HttpClient, private db: AngularFireDatabase) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -120,10 +121,8 @@ export class ChatService {
      * Get contacts
      */
     getContacts(): Observable<any> {
-        return this._httpClient.get<Contact[]>('api/apps/chat/contacts').pipe(
-            tap((response: Contact[]) => {
-                this._contacts.next(response);
-            })
+        return this.db.list('users').valueChanges().pipe(
+            map((response: Contact[]) => response.filter(contact => contact.id !== this._chatClient.getValue().user.id) )
         );
     }
 
@@ -229,7 +228,7 @@ export class ChatService {
         this._chatClient.next(chatClient);
     }
 
-    getUsersChat(): Observable<Array<UserResponse<DefaultGenerics>>> {
+    /* getUsersChat(): Observable<Array<UserResponse<DefaultGenerics>>> {
         return this._chatClient.pipe(
             switchMap(chatClient =>
                 from(chatClient.queryUsers({
@@ -239,13 +238,17 @@ export class ChatService {
                 )
             )
         );
+    } */
+
+    getUsersChat(): Observable<any> {
+        return this.db.list('users').valueChanges();
     }
 
-    createPrivateChat(): Observable<ChannelAPIResponse<DefaultGenerics>>{
+    createPrivateChat(memberId: string): Observable<ChannelAPIResponse<DefaultGenerics>>{
         return this._chatClient.pipe(
             switchMap(chatClient => {
                 const channel =  chatClient.channel('messaging', {
-                    members: ['bKGuZigmozR6WD4AbuFE9j43FZG3', 'XX8BRnWNBQd7ZVZBFtvWm8Vcwof2'],
+                    members: [memberId, chatClient.user.id],
                 });
                 return from(channel.create());
             })

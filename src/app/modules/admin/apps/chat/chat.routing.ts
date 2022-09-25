@@ -10,7 +10,6 @@ export const chatRoutes: Route[] = [
         component: ChatComponent,
         resolve  : {
             chats   : ChatChatsResolver,
-            contacts: ChatContactsResolver,
             profile : ChatProfileResolver
         },
         children : [

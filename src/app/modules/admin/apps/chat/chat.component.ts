@@ -58,11 +58,7 @@ export class ChatComponent implements OnInit {
                 },
                 chatClient.devToken(user.id)
             )),
-            tap(res => console.log('user', (res as ConnectionOpen).me)),
-            map((channel) => {
-                console.log('channel', channel);
-                return true;
-            }),
+            map(channel => true),
             catchError(() => of(false))
         );
     }

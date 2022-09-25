@@ -1,22 +1,23 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, of, ReplaySubject, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { User } from 'app/core/user/user.types';
-import { AuthUtils } from '../auth/auth.utils';
 import { environment } from 'environments/environment';
-
+import { map, Observable, ReplaySubject, tap } from 'rxjs';
+import { AuthUtils } from '../auth/auth.utils';
 @Injectable({
     providedIn: 'root',
 })
 export class UserService {
-
-
     private _user: ReplaySubject<User> = new ReplaySubject<User>(1);
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) {}
+    constructor(
+        private _httpClient: HttpClient,
+        private db: AngularFireDatabase
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -49,11 +50,15 @@ export class UserService {
      */
     get(): Observable<User> {
         const userId = AuthUtils._decodeToken(this.getAccessToken()).user_id;
-        return this._httpClient.get<User>(`${environment.firebase.databaseURL}/users/${userId}.json`).pipe(
-            tap((user) => {
-                this._user.next(user);
-            })
-        );
+        return this._httpClient
+            .get<User>(
+                `${environment.firebase.databaseURL}/users/${userId}.json`
+            )
+            .pipe(
+                tap((user) => {
+                    this._user.next(user);
+                })
+            );
     }
 
     /**
@@ -68,4 +73,5 @@ export class UserService {
             })
         );
     }
+
 }

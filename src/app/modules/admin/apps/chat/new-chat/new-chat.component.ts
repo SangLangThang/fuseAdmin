@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subject, takeUntil } from 'rxjs';
 import { Contact } from 'app/modules/admin/apps/chat/chat.types';
@@ -19,7 +19,7 @@ export class NewChatComponent implements OnInit, OnDestroy
     /**
      * Constructor
      */
-    constructor(private _chatService: ChatService)
+    constructor(private _chatService: ChatService, private _changeDetectorRef: ChangeDetectorRef)
     {
     }
 
@@ -33,10 +33,11 @@ export class NewChatComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Contacts
-        this._chatService.contacts$
+        this._chatService.getContacts()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((contacts: Contact[]) => {
                 this.contacts = contacts;
+                this._changeDetectorRef.markForCheck();
             });
     }
 
@@ -63,5 +64,9 @@ export class NewChatComponent implements OnInit, OnDestroy
     trackByFn(index: number, item: any): any
     {
         return item.id || index;
+    }
+
+    addUserChat(): void{
+        this.drawer.close();
     }
 }

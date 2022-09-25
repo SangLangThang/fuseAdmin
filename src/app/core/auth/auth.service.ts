@@ -144,7 +144,6 @@ export class AuthService {
                     id: response.localId,
                     name: user.name,
                     email: response.email,
-                    avatar: 'https://firebasestorage.googleapis.com/v0/b/medico-4c2e3.appspot.com/o/profile.png?alt=media&token=b2b380fb-e161-48b8-889e-90d628f13e81',
                     status: 'Online',
                 };
                 return this._httpClient.patch(`${environment.firebase.databaseURL}/users/${newUserDataBase.id}.json`,newUserDataBase);
